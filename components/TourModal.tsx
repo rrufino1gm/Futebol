@@ -38,7 +38,10 @@ const TourModal: React.FC<TourModalProps> = ({ isOpen, onClose }) => {
                 <strong>Selecione seu Nome:</strong> Na janela que abrir, escolha seu nome na lista.
               </li>
               <li>
-                <strong>Escolha sua Resposta:</strong> Clique em <span className="text-green-500 font-bold">✅ Vou</span>, <span className="text-yellow-500 font-bold">❓ Talvez</span> ou <span className="text-red-500 font-bold">❌ Não vou</span>. Pronto! Sua resposta aparecerá na lista.
+                <strong>Escolha sua Resposta:</strong> Clique em <span className="text-green-500 font-bold">✅ Vou</span>, <span className="text-yellow-500 font-bold">❓ Talvez</span> ou <span className="text-red-500 font-bold">❌ Não vou</span>.
+              </li>
+               <li>
+                <strong>Ver Rankings:</strong> Use as abas no topo para ver a <span className="font-mono bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">Ranking Futebol</span> (tabela de notas) e o <span className="font-mono bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">Ranking Automático</span> (classificação e gráfico).
               </li>
             </ol>
           </section>
@@ -51,23 +54,20 @@ const TourModal: React.FC<TourModalProps> = ({ isOpen, onClose }) => {
             </h3>
             <p className="mb-3 text-sm">Primeiro, ative o "Modo Técnico" clicando no botão no canto superior esquerdo.</p>
             <ul className="list-disc list-inside space-y-3 pl-2">
-              <li>
-                <strong>Montar o Time:</strong> Com o modo técnico ativo, clique e arraste os jogadores confirmados (✅) para posicioná-los no campo.
+               <li>
+                <strong>Montar Time (Escalação):</strong> Na aba <span className="font-mono bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">Escalação</span>, arraste jogadores confirmados (✅) para o campo e divida-os em times (Branco/Azul).
               </li>
               <li>
-                <strong>Gerenciar Lista:</strong> Adicione, edite (<i className="fas fa-pencil-alt text-xs"></i>), ou remova (<i className="fas fa-trash-alt text-xs"></i>) jogadores da lista principal.
+                <strong>Lançar Notas (Ranking):</strong> Na aba <span className="font-mono bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">Ranking Futebol</span>, insira as notas (0-5) para cada critério. A pontuação total é calculada automaticamente.
               </li>
               <li>
-                <strong>Promover a Técnico:</strong> Defina um jogador como técnico (<i className="fas fa-crown text-xs"></i>). Apenas um técnico pode ser definido por vez.
+                <strong>Gerenciar Lista:</strong> Na aba <span className="font-mono bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">Escalação</span>, adicione, edite (<i className="fas fa-pencil-alt text-xs"></i>), ou remova (<i className="fas fa-trash-alt text-xs"></i>) jogadores.
               </li>
               <li>
-                <strong>Compartilhar Convite:</strong> Use o botão <span className="font-mono bg-cyan-500 text-white px-2 py-1 rounded-md text-sm">Compartilhar Convite</span> para enviar o link da página no WhatsApp.
+                <strong>Exportar Imagem:</strong> Clique em <span className="font-mono bg-indigo-500 text-white px-2 py-1 rounded-md text-sm">Exportar Time</span> para salvar uma imagem da escalação.
               </li>
               <li>
-                <strong>Exportar Imagem:</strong> Clique em <span className="font-mono bg-indigo-500 text-white px-2 py-1 rounded-md text-sm">Exportar Time</span> para salvar uma imagem da escalação e compartilhar onde quiser.
-              </li>
-              <li>
-                <strong>Nova Partida:</strong> O botão <span className="font-mono bg-red-500 text-white px-2 py-1 rounded-md text-sm">Nova Partida</span> limpa todas as confirmações para começar uma nova semana, mantendo a lista de jogadores.
+                <strong>Nova Partida:</strong> O botão <span className="font-mono bg-red-500 text-white px-2 py-1 rounded-md text-sm">Nova Partida</span> limpa as confirmações para uma nova semana.
               </li>
             </ul>
           </section>

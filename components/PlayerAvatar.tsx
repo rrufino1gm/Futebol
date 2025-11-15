@@ -16,6 +16,17 @@ const PlayerAvatar: React.FC<PlayerAvatarProps> = ({ player, onPositionUpdate, c
     }
   };
   
+  const getTeamClasses = () => {
+    switch(player.team) {
+        case 'BRANCO':
+            return 'bg-gray-100 text-gray-900 border-4 border-blue-500 shadow-lg';
+        case 'AZUL':
+            return 'bg-blue-700 text-white border-4 border-white dark:border-gray-800 shadow-lg';
+        default:
+            return 'bg-blue-500 dark:bg-blue-400 text-white border-4 border-white dark:border-gray-800 shadow-lg';
+    }
+  }
+
   return (
     <motion.div
       drag={isCoachMode}
@@ -37,7 +48,7 @@ const PlayerAvatar: React.FC<PlayerAvatarProps> = ({ player, onPositionUpdate, c
         y: player.position?.y,
       }}
     >
-      <div className="w-14 h-14 bg-blue-500 dark:bg-blue-400 rounded-full flex items-center justify-center text-white font-bold text-xl border-4 border-white dark:border-gray-800 shadow-lg">
+      <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-xl ${getTeamClasses()}`}>
         {player.name.charAt(0)}
       </div>
       <span className="mt-1 text-xs font-semibold bg-black/50 text-white px-2 py-1 rounded">

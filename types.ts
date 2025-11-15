@@ -16,4 +16,16 @@ export interface Player {
   status: PlayerStatus;
   position: Position | null;
   role?: 'coach';
+  team?: 'BRANCO' | 'AZUL' | null;
+  ranking: {
+    posicao?: number;
+    assiduidade?: number;
+    espiritoDeEquipe?: number;
+    resistencia?: number;
+    tecnica?: number;
+    fairPlay?: number;
+    bomHumor?: number;
+    observacoes?: string;
+    pontuacaoTotal: number;
+  };
 }

@@ -11,6 +11,7 @@ interface SidePanelProps {
   addPlayer: (name: string) => void;
   removePlayer: (playerId: number) => void;
   updatePlayerName: (playerId: number, newName: string) => void;
+  updatePlayerTeam: (playerId: number, team: 'BRANCO' | 'AZUL' | null) => void;
   setPlayerAsCoach: (playerId: number) => void;
   isCoachMode: boolean;
   onExport: () => void;
@@ -20,9 +21,10 @@ const PlayerListItem: React.FC<{
   player: Player;
   removePlayer: (playerId: number) => void;
   updatePlayerName: (playerId: number, newName: string) => void;
+  updatePlayerTeam: (playerId: number, team: 'BRANCO' | 'AZUL' | null) => void;
   setPlayerAsCoach: (playerId: number) => void;
   isCoachMode: boolean;
-}> = ({ player, removePlayer, updatePlayerName, setPlayerAsCoach, isCoachMode }) => {
+}> = ({ player, removePlayer, updatePlayerName, updatePlayerTeam, setPlayerAsCoach, isCoachMode }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(player.name);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,6 +83,13 @@ const PlayerListItem: React.FC<{
       </div>
       {isCoachMode && (
          <div className="flex items-center space-x-2 transition-opacity flex-shrink-0">
+            {isCoachMode && player.status === PlayerStatus.CONFIRMED && (
+                <div className="flex items-center space-x-1">
+                    <button onClick={() => updatePlayerTeam(player.id, 'BRANCO')} title="Time Branco" className={`w-6 h-6 rounded-full text-xs font-bold transition-colors ${player.team === 'BRANCO' ? 'bg-white text-black border-2 border-blue-500' : 'bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200'}`}>B</button>
+                    <button onClick={() => updatePlayerTeam(player.id, 'AZUL')} title="Time Azul" className={`w-6 h-6 rounded-full text-xs font-bold transition-colors ${player.team === 'AZUL' ? 'bg-blue-700 text-white border-2 border-white' : 'bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-gray-200'}`}>A</button>
+                    {player.team && <button onClick={() => updatePlayerTeam(player.id, null)} title="Remover do time" className="text-gray-400 hover:text-red-500"><i className="fas fa-times-circle text-sm"></i></button>}
+                </div>
+            )}
             {player.role !== 'coach' && (
                 <button onClick={() => setPlayerAsCoach(player.id)} className="text-yellow-500 hover:text-yellow-400" aria-label="Set as coach" title="Promover a Técnico">
                     <i className="fas fa-crown"></i>
@@ -104,8 +113,11 @@ const PlayerListItem: React.FC<{
   );
 };
 
-const SidePanel: React.FC<SidePanelProps> = ({ players, onConfirmPresence, clearField, resetMatch, addPlayer, removePlayer, updatePlayerName, setPlayerAsCoach, isCoachMode, onExport }) => {
+const SidePanel: React.FC<SidePanelProps> = ({ players, onConfirmPresence, clearField, resetMatch, addPlayer, removePlayer, updatePlayerName, updatePlayerTeam, setPlayerAsCoach, isCoachMode, onExport }) => {
   const [newPlayerName, setNewPlayerName] = useState('');
+
+  const teamBranco = players.filter(p => p.team === 'BRANCO');
+  const teamAzul = players.filter(p => p.team === 'AZUL');
   
   const handleShare = () => {
     const url = `https://wa.me/?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
@@ -123,18 +135,38 @@ const SidePanel: React.FC<SidePanelProps> = ({ players, onConfirmPresence, clear
   return (
     <div className="w-full lg:w-96 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg flex-shrink-0 flex flex-col">
       <h2 className="text-xl font-bold mb-4 text-gray-800 dark:text-white border-b pb-2 border-gray-200 dark:border-gray-700">Jogadores</h2>
-      <ul className="space-y-1 flex-grow overflow-y-auto mb-4 pr-2">
-        {players.map(player => (
-          <PlayerListItem 
-            key={player.id} 
-            player={player} 
-            removePlayer={removePlayer}
-            updatePlayerName={updatePlayerName}
-            setPlayerAsCoach={setPlayerAsCoach}
-            isCoachMode={isCoachMode}
-          />
-        ))}
-      </ul>
+      <div className="flex-grow overflow-y-auto mb-4 pr-2">
+        <ul className="space-y-1">
+          {players.map(player => (
+            <PlayerListItem 
+              key={player.id} 
+              player={player} 
+              removePlayer={removePlayer}
+              updatePlayerName={updatePlayerName}
+              updatePlayerTeam={updatePlayerTeam}
+              setPlayerAsCoach={setPlayerAsCoach}
+              isCoachMode={isCoachMode}
+            />
+          ))}
+        </ul>
+        {isCoachMode && (teamBranco.length > 0 || teamAzul.length > 0) && (
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="mb-3">
+              <h3 className="font-semibold text-lg text-gray-800 dark:text-white">Time Branco <span className="text-sm font-normal">({teamBranco.length}/11)</span></h3>
+              <ul className="text-sm space-y-1 mt-1 pl-2">
+                {teamBranco.map(p => <li key={p.id} className="p-1.5 rounded bg-gray-100 dark:bg-gray-700">{p.name}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-lg text-gray-800 dark:text-white">Time Azul <span className="text-sm font-normal">({teamAzul.length}/11)</span></h3>
+              <ul className="text-sm space-y-1 mt-1 pl-2">
+                {teamAzul.map(p => <li key={p.id} className="p-1.5 rounded bg-gray-100 dark:bg-gray-700">{p.name}</li>)}
+              </ul>
+            </div>
+          </div>
+        )}
+      </div>
+
       {isCoachMode && (
         <form onSubmit={handleAddPlayer} className="flex space-x-2 mb-4">
             <input
